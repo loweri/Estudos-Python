@@ -27,8 +27,9 @@ print("=" * 45)
 ###
 soma_pares = 0
 for item in range (2,51,2):
-    total_pares = soma_pares + item
-    print(f"A soma total dos números pares de 2 a 50 é: {total_pares}")
+    soma_pares += item
+    print(f"A soma atual: {soma_pares}")
+print(f"A soma total dos números pares de 2 a 50 é: {soma_pares}")
 print("=" * 45)
 ###
 fatorial = 1
