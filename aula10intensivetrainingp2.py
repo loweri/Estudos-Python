@@ -84,3 +84,74 @@ for catalog16 in itens_loja:
     dpto16 = catalog16["depto"]
     catalogo_precos[item16] = preco16
 print(f"Teste16: {catalogo_precos}")
+print("=" * 45)
+### K17 Faturamento acumulado por departamento
+itens_loja = [
+    {"item": "Mouse", "preco": 80.0, "depto": "Informatica"},
+    {"item": "Camisa", "preco": 50.0, "depto": "Vestuario"},
+    {"item": "Teclado", "preco": 150.0, "depto": "Informatica"},
+    {"item": "Tenis", "preco": 200.0, "depto": "Calcados"}
+]
+faturamento_dpto = {}
+for ft_dpto in itens_loja:
+    item17 = ft_dpto["item"]
+    preco17 = ft_dpto["preco"]
+    depto17 = ft_dpto["depto"]
+    if depto17 in faturamento_dpto:
+        faturamento_dpto[depto17] += preco17
+    else:
+        faturamento_dpto[depto17] = preco17
+print(f"Teste17: {faturamento_dpto}")
+print("=" * 45)
+### K18 Inspeção de Cluster Aninhado
+cluster_spark = {
+    "cluster_id": "c-9914",
+    "especificacoes": {
+        "nos": 8,
+        "memoria_gb": 64,
+        "disco_tb": 2
+    },
+    "ambiente": "producao"
+}
+temp_espec = cluster_spark["especificacoes"]
+temp_nos = temp_espec["nos"]
+temp_memoriagb = temp_espec["memoria_gb"]
+print(f"Teste18: Cluster c-9914 configurado com {temp_nos} nós e {temp_memoriagb}GB de memória no ambiente producao")
+print("=" * 45)
+### k19 Escalonamento de recursos
+cluster_spark = {
+    "cluster_id": "c-9914",
+    "especificacoes": {
+        "nos": 8,
+        "memoria_gb": 64,
+        "disco_tb": 2
+    },
+    "ambiente": "producao"
+}
+temp_espec19 = cluster_spark["especificacoes"]
+temp_espec19["nos"] = 12
+temp_espec19["memoria_gb"] = 128
+print(f"{cluster_spark}")
+print("=" * 45)
+### k20 Pipeline De-Para
+mapa_cargos = {
+    "Estagiario": "NIVEL_1",
+    "Junior": "NIVEL_2",
+    "Pleno": "NIVEL_3",
+    "Senior": "NIVEL_4"
+}
+
+colaboradores = [
+    {"nome": "Lucas", "cargo": "Junior"},
+    {"nome": "Beatriz", "cargo": "Senior"},
+    {"nome": "Rodrigo", "cargo": "Pleno"},
+    {"nome": "Camila", "cargo": "Junior"}
+]
+colaboradores_mascarados = []
+for colab in colaboradores:
+    nome_temp = colab["nome"]
+    cargo_temp = colab["cargo"]
+    novo_cargo = mapa_cargos[cargo_temp]
+    novo_reg = {"nome": colab["nome"], "cargo": novo_cargo}
+    colaboradores_mascarados.append(novo_reg)
+print(f"Teste20: {colaboradores_mascarados}")
