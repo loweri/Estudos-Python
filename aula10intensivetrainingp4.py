@@ -115,7 +115,14 @@ despesas = [
     {"categoria": "Alimentos", "valor": 150.0}
 ]
 gastos_por_categoria = {}
-
+for despesa in despesas:
+    categoriak8 = despesa["categoria"]
+    valork8 = despesa["valor"]
+    if categoriak8 in gastos_por_categoria:
+        gastos_por_categoria[categoriak8] += valork8
+    else:
+        gastos_por_categoria[categoriak8] = valork8
+print(gastos_por_categoria)
 
 print("=" * 65)
 
@@ -130,7 +137,12 @@ sensores = [
     {"sensor": "s5", "valido": True}
 ]
 sensores_ativos = []
-
+for sensor in sensores:
+    sensork9 = sensor["sensor"]
+    validok9 = sensor["valido"]
+    if validok9 == True:
+        sensores_ativos.append(sensork9)
+print(sensores_ativos)
 
 print("=" * 65)
 
@@ -144,3 +156,9 @@ equipes = {
     "Diana": "RH"
 }
 pessoas_por_depto = {}
+for chavek10, valork10 in equipes.items():
+    if valork10 in pessoas_por_depto:
+        pessoas_por_depto[valork10].append(chavek10)
+    else:
+        pessoas_por_depto[valork10] = [chavek10]
+print(pessoas_por_depto)
