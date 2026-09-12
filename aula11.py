@@ -10,7 +10,7 @@ print("=" * 65)
 # Entrada:
 logs_usuarios = [101, 102, 101, 103, 104, 102, 105, 101, 104]
 usuarios_unicos = None
-
+usuarios_unicos = set(logs_usuarios)
 print(usuarios_unicos)
 print("=" * 65)
 
@@ -20,8 +20,8 @@ print("=" * 65)
 # 2. Remova o IP "10.0.0.1" usando o método seguro que não causa erro caso o item não exista.
 # Entrada:
 blacklist = {"10.0.0.1", "172.16.0.5"}
-
-
+blacklist.add("192.168.1.50")
+blacklist.discard("10.0.0.1")
 print(blacklist)
 print("=" * 65)
 
@@ -31,7 +31,7 @@ print("=" * 65)
 acesso_pagamentos = {"Alice", "Bruno", "Carlos", "Diana"}
 acesso_auditoria = {"Bruno", "Diana", "Eduardo", "Fernanda"}
 ambos_acessos = None
-
+ambos_acessos = acesso_pagamentos & acesso_auditoria
 print(ambos_acessos)
 print("=" * 65)
 
@@ -41,7 +41,7 @@ print("=" * 65)
 clientes_pedidos = {"C1", "C2", "C3", "C4", "C5"}
 clientes_pagos = {"C1", "C3", "C5"}
 pendentes_pagamento = None
-
+pendentes_pagamento = clientes_pedidos - clientes_pagos
 print(pendentes_pagamento)
 print("=" * 65)
 
@@ -54,6 +54,7 @@ servidores_us_east = {"srv-01", "srv-02", "srv-03"}
 servidores_us_west = {"srv-02", "srv-03", "srv-04"}
 todos_servidores = None
 exclusivos_por_regiao = None
-
+todos_servidores = servidores_us_east | servidores_us_west
+exclusivos_por_regiao = servidores_us_east ^ servidores_us_west
 print("Todos:", todos_servidores)
 print("Exclusivos:", exclusivos_por_regiao)
