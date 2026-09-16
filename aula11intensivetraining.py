@@ -115,8 +115,9 @@ print("=" * 65)
 # 3. Tente remover a sessão 'tok_inexistente' garantindo que o programa continue executando sem falhas.
 # Saída esperada: {'tok_live_01', 'tok_live_03', 'tok_live_99'}
 sessoes_ativas = {"tok_live_01", "tok_live_02", "tok_live_03"}
-
-
+sessoes_ativas.add("tok_live_99")
+sessoes_ativas.discard("tok_live_02")
+sessoes_ativas.discard("tok_inexistente")
 print("K9 - Sessões ativas:", sessoes_ativas)
 print("=" * 65)
 
@@ -128,6 +129,9 @@ print("=" * 65)
 documentos_obrigatorios = {"RG", "CPF", "COMPROVANTE_RESIDENCIA"}
 documentos_enviados = {"RG", "CPF", "COMPROVANTE_RESIDENCIA", "CNH", "HOLERITE"}
 cadastro_conforme = None
-
+if documentos_enviados & documentos_obrigatorios == documentos_obrigatorios:
+    cadastro_conforme = True
+else:
+    cadastro_conforme = False
 
 print("K10 - Cadastro conforme:", cadastro_conforme)
