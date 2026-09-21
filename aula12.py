@@ -145,17 +145,16 @@ print("=" * 65)
 # o texto da mensagem na variável 'motivo_recusa'.
 # Saída esperada: "Saldo insuficiente"
 def sacar(saldo, valor):
-    saque = saldo - valor
-    return saque
-try:
-    saque01 = sacar(100.0, 150.0)
-except ValueError as e:
-    motivo_recusa = valor > saldo
-    e = "Saldo insuficiente"
-
-
+    if valor > saldo:
+        raise ValueError("Saldo Insuficiente")
+    if valor <= 0:
+        raise ValueError("Valor de saque invalido")
+    return saldo - valor
 motivo_recusa = ""
-
+try:
+    saque = sacar(100.0, 150.0)
+except ValueError as err:
+    motivo_recusa = str(err)
 
 print("K7 - Motivo da recusa:", motivo_recusa)
 print("=" * 65)
@@ -172,8 +171,14 @@ print("=" * 65)
 arquivos_recebidos = ["vendas.csv", "clientes.parquet", "", "relatorio.json"]
 aprovados = []
 rejeitados = []
-
-
+for arquivo in arquivos_recebidos:
+    try:
+        if arquivo == "":
+            raise ValueError("Nome Ausente")
+    except ValueError as err:
+        rejeitados.append(str(err))
+    else:
+        aprovados.append(arquivo)
 print("K8 - Aprovados:", aprovados)
 print("K8 - Rejeitados:", rejeitados)
 print("=" * 65)
@@ -190,8 +195,12 @@ coordenadas = [
     [60, 70, 80]
 ]
 eixos_z = []
-
-
+for coordenada in coordenadas:
+    try:
+        coordz = coordenada[2]
+        eixos_z.append(coordz)
+    except IndexError:
+        eixos_z.append(0)
 print("K9 - Eixos Z:", eixos_z)
 print("=" * 65)
 
@@ -206,7 +215,12 @@ conversoes = 150
 visitantes = 0
 taxa = None
 auditoria_finalizada = False
-
+try:
+    taxa = conversoes / visitantes
+except ZeroDivisionError:
+    taxa = 0.0
+finally:
+    auditoria_finalizada = True
 
 print(f"K10 - Taxa: {taxa} | Auditoria Finalizada: {auditoria_finalizada}")
 
