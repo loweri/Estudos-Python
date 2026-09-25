@@ -57,10 +57,13 @@ linhas_header = [
     ["id", "nome", "status", "2026-01-02"]
 ]
 timestamps_coletados = []
-
-# Espaço para resolução:
-
-
+for linha in linhas_header:
+    try:
+        coleta = linha[3]
+        timestamps_coletados.append(coleta)
+    except IndexError:
+        semcoleta = "Sem_Timestamp"
+        timestamps_coletados.append(semcoleta)
 print("K3 - Timestamps Coletados:", timestamps_coletados)
 # Saída esperada: ['2026-01-01', 'SEM_TIMESTAMP', '2026-01-02']
 print("=" * 65)
@@ -73,8 +76,10 @@ print("=" * 65)
 custo_total = 450.0
 requisicoes_totais = 0
 custo_medio = None
-
-# Espaço para resolução:
+try:
+    custo_medio = custo_total / requisicoes_totais
+except ZeroDivisionError:
+    custo_medio = 0.0
 
 
 print("K4 - Custo Médio:", custo_medio)
@@ -93,9 +98,14 @@ itens_brutos = ["10.0", None, "texto", "20.0"]
 valores_validos = []
 erros_valor = 0
 erros_tipo = 0
-
-# Espaço para resolução:
-
+for item in itens_brutos:
+    try:
+        itemconver = float(item) / 2
+        valores_validos.append(itemconver)
+    except ValueError:
+        erros_valor += 1
+    except TypeError:
+        erros_tipo += 1
 
 print("K5 - Valores Válidos:", valores_validos)
 print(f"K5 - Erros de Valor: {erros_valor} | Erros de Tipo: {erros_tipo}")
@@ -112,8 +122,12 @@ print("=" * 65)
 # Dados de entrada:
 sensores = ["101.5", "ERR_OFFLINE", "98.2", "ERR_VOLTAGEM"]
 auditoria_falhas = []
-
-# Espaço para resolução:
+for sensor in sensores:
+    try:
+        num_audit = float(sensor)
+    except ValueError as e:
+        erro_capt = (sensor, str(e))
+        auditoria_falhas.append(erro_capt)
 
 
 print("K6 - Auditoria de Falhas:", auditoria_falhas)
@@ -131,10 +145,18 @@ print("=" * 65)
 registro_alerta = ""
 
 def validar_temperatura_servidor(temperatura):
-    pass
+    if temperatura > 85.0:
+        raise ValueError("Alerta: Superaquecimento critico")
+    if temperatura < 0.0:
+        raise ValueError("Alerta: sensor defeituoso")
+    return "Temperatura Normal"
 
 # Espaço para a chamada protegida:
-
+registro_alerta = ""
+try:
+    validar_temperatura_servidor(92.5)
+except ValueError as e:
+    registro_alerta = str(e)
 
 print("K7 - Registro de Alerta:", registro_alerta)
 # Saída esperada: "Alerta: Superaquecimento critico"
@@ -152,6 +174,15 @@ aprovados = []
 falhas = []
 
 # Espaço para resolução:
+for contrato in contratos:
+    try:
+        contrato_hold = len(contrato)
+        if contrato_hold < 3:
+            raise ValueError ("Contrato invalido")
+    except ValueError as e:
+        falhas.append(str(e))
+    else:
+            aprovados.append(contrato)
 
 
 print("K8 - Aprovados:", aprovados)
@@ -173,7 +204,12 @@ sessao_ativa = True
 status_operacao = "PENDENTE"
 
 # Espaço para resolução:
-
+try:
+    divisao = 100 / divisor
+except ZeroDivisionError:
+    status_operacao = "FALHA"
+finally:
+    sessao_ativa = False
 
 print(f"K9 - Status: {status_operacao} | Sessão Ativa: {sessao_ativa}")
 # Saída esperada: Status: FALHA | Sessão Ativa: False
@@ -194,7 +230,17 @@ erros_lote = []
 total_processamentos = 0
 
 # Espaço para resolução:
-
+for transacao in transacoes:
+    try:
+        if transacao < 0:
+            raise ValueError ("Transacao Negativa")  
+    except ValueError as err:
+        erro = str(err)
+        erros_lote.append(erro)
+    else:
+        processadas_lote.append(transacao) 
+    finally:
+        total_processamentos += 1
 
 print("K10 - Processadas:", processadas_lote)
 print("K10 - Erros do Lote:", erros_lote)
