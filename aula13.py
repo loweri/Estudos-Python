@@ -19,10 +19,14 @@ print("=" * 65)
 servidores_iniciais = ["srv-prod-01", "srv-prod-02", "srv-db-master", "srv-cache-01"]
 arquivo_k1 = "servidores.txt"
 servidores_lidos = []
-
-# Espaço para resolução:
-
-
+with open("servidores.txt", "w") as f:
+    for s in servidores_iniciais:
+        f.write(s + "\n")
+servidores_lidos = []
+with open("servidores.txt", "r") as f:
+    for linha in f:
+        nome_limpo = linha.strip()
+        servidores_lidos.append(nome_limpo)
 print("K1 - Servidores Lidos:", servidores_lidos)
 # Saída esperada: ['srv-prod-01', 'srv-prod-02', 'srv-db-master', 'srv-cache-01']
 print("=" * 65)
