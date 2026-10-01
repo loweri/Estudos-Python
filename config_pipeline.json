@@ -1,0 +1,9 @@
+{
+    "versao": "2.1.0",
+    "esteira": "ingestao_financeira",
+    "parametros": {
+        "database": "dw_production",
+        "porta": 5432,
+        "ssl": true
+    }
+}

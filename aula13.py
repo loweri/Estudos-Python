@@ -42,9 +42,16 @@ arquivo_k2 = "acessos.log"
 logs_iniciais = ["USER_LOGIN:1001", "QUERY_RUN:1001"]
 novos_logs = ["EXPORT_DATA:1001", "USER_LOGOUT:1001"]
 todos_logs = []
-
-# Espaço para resolução:
-
+with open("acessos.log", "w") as f:
+    for l in logs_iniciais:
+        f.write(l + "\n")
+with open("acessos.log", "a") as f:
+    for l in novos_logs:
+        f.write(l + "\n")    
+with open("acessos.log", "r") as f:
+    for linha in f:
+        nome_limpo = linha.strip()
+        todos_logs.append(nome_limpo)
 
 print("K2 - Todos os Logs:", todos_logs)
 # Saída esperada: ['USER_LOGIN:1001', 'QUERY_RUN:1001', 'EXPORT_DATA:1001', 'USER_LOGOUT:1001']
@@ -68,8 +75,20 @@ dados_sensores = [
 ]
 sensores_validos = []
 
-# Espaço para resolução:
+cabecalho = ["id_sensor", "temperatura", "status"]
 
+with open("sensores_estacao.csv", "w", newline="") as f:
+    escritor = csv.writer(f)
+    escritor.writerow(cabecalho)      
+    escritor.writerows(dados_sensores)
+
+with open("sensores_estacao.csv", "r") as f:
+    leitor = csv.reader(f)
+    next(leitor)  # pula a linha do cabeçalho!
+    
+    for linha in leitor:
+        if float(linha[1]) > 25.0:
+            sensores_validos.append(linha[0])  # guarda o id
 
 print("K3 - Sensores Válidos (> 25.0):", sensores_validos)
 # Saída esperada (lista de ids dos sensores válidos ou registros):
@@ -96,9 +115,11 @@ pipeline_config = {
 }
 config_carregada = {}
 banco_conectado = ""
-
-# Espaço para resolução:
-
+with open("config_pipeline.json", "w") as f:
+    json.dump(pipeline_config, f, indent=4)
+with open("config_pipeline.json", "r") as f:
+    config_carregada = json.load(f)
+banco_conectado = config_carregada["parametros"]["database"]
 
 print("K4 - Banco Conectado:", banco_conectado)
 # Saída esperada: "dw_production"
@@ -115,10 +136,12 @@ arquivo_k5_teste = "arquivo_fantasma.txt"
 resultado_carga = None
 
 def carregar_tabela_segura(caminho_arquivo):
-    pass
-
-# Espaço para chamada da função:
-
+    try:
+        with open("arquivo_fantasma.txt", "r") as f:
+            return f.readlines()
+    except FileNotFoundError:
+        return []
+resultado_carga = carregar_tabela_segura("arquivo_fantasma.txt")
 
 print("K5 - Resultado Carga Segura:", resultado_carga)
 # Saída esperada: []

@@ -1,0 +1,5 @@
+id_sensor,temperatura,status
+S01,24.5,ATIVO
+S02,28.1,ATIVO
+S03,31.4,ALERTA
+S04,21.0,STANDBY
