@@ -121,6 +121,7 @@ df_chamados_higienizados = None
 primeiro_chamado_id = 0
 df_chamados_higienizados = df_chamados.drop_duplicates(subset=["chamado_id"])
 df_ranking = df_chamados_higienizados.sort_values(by="nivel_prioridade", ascending=False)
+df_chamados_higienizados = df_ranking
 primeiro_chamado_id = int(df_ranking.iloc[0]["chamado_id"])
 
 print("K5 - Total de Chamados Únicos:", len(df_chamados_higienizados) if df_chamados_higienizados is not None else 0)
