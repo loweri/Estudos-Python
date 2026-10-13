@@ -95,9 +95,13 @@ print("=" * 65)
 # 2. Ordene o resultado pela 'memoria_gb' de forma crescente.
 # 3. Recupere os registros na lista 'resumo_por_memoria'.
 resumo_por_memoria = []
-
-# Espaço para resolução:
-
+cursor.execute("""
+    SELECT memoria_gb, COUNT(*)
+    FROM dispositivos
+    GROUP BY memoria_gb
+    ORDER BY memoria_gb ASC;
+""")
+resumo_por_memoria = cursor.fetchall()
 
 print("K4 - Resumo por Memória:", resumo_por_memoria)
 # Saída esperada: [(32, 2), (64, 1), (128, 2)]
@@ -112,9 +116,9 @@ print("=" * 65)
 # 2. Armazene a quantidade de linhas desse DataFrame na variável 'total_pesados' (int).
 df_servidores_pesados = None
 total_pesados = 0
-
-# Espaço para resolução:
-
+query = "SELECT hostname, ip, memoria_gb FROM dispositivos WHERE memoria_gb > 32"
+df_servidores_pesados = pd.read_sql_query(query, conexao)
+total_pesados = len(df_servidores_pesados)
 
 print("K5 - Total de Servidores no DataFrame:", total_pesados)
 print("K5 - Colunas do DataFrame:", list(df_servidores_pesados.columns) if df_servidores_pesados is not None else [])
