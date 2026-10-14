@@ -1,0 +1,6 @@
+[
+  {"cliente_id": "C10", "nome_cliente": "Ana Silva", "estado": "SP"},
+  {"cliente_id": "C20", "nome_cliente": "Bruno Gomes", "estado": "RJ"},
+  {"cliente_id": "C30", "nome_cliente": "Carla Dias", "estado": "MG"},
+  {"cliente_id": "C40", "nome_cliente": "Daniel Rocha", "estado": "PR"}
+]
