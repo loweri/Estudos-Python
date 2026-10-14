@@ -25,9 +25,9 @@ dados_pedidos = {
 df_pedidos = pd.DataFrame(dados_pedidos)
 df_pedidos_limpos = None
 total_pedidos_validos = 0
-
-# Espaço para sua resolução:
-
+df_pedidos_limpos = df_pedidos.drop_duplicates(subset=["pedido_id"])
+df_pedidos_limpos = df_pedidos_limpos.fillna(value={"cupom_desconto": "SEM_CUPOM"})
+total_pedidos_validos = len(df_pedidos_limpos)
 
 print("D1 - Total de Pedidos Válidos:", total_pedidos_validos)
 print("D1 - Cupons Tratados:", df_pedidos_limpos["cupom_desconto"].tolist() if df_pedidos_limpos is not None else [])
@@ -60,9 +60,28 @@ catalogo_produtos = [
 conexao_db = None
 cursor_db = None
 produtos_filtrados = []
-
-# Espaço para sua resolução:
-
+conexao_db = sqlite3.connect(":memory:")
+cursor_db = conexao_db.cursor()
+cursor_db.execute("""
+    CREATE TABLE produtos (
+    id INTEGER PRIMARY KEY,
+    nome TEXT,
+    categoria TEXT,
+    preco FLOAT
+    );
+""")
+cursor_db.executemany("""
+    INSERT INTO produtos (id, nome, categoria, preco)
+    VALUES (?, ?, ?, ?);
+""",catalogo_produtos)
+conexao_db.commit()
+cursor_db.execute("""
+    SELECT nome, preco
+    FROM produtos
+    WHERE preco > 500.0
+    AND categoria = 'Eletronicos';
+""")
+produtos_filtrados = cursor_db.fetchall()
 
 print("D2 - Produtos Filtrados:", produtos_filtrados)
 # Saída esperada: [('Monitor 4K', 1800.0), ('Notebook Pro', 4500.0)]
@@ -79,9 +98,11 @@ print("=" * 65)
 df_catalogo = None
 media_por_categoria = None
 media_moveis = 0.0
-
-# Espaço para sua resolução:
-
+query = "SELECT categoria, preco FROM produtos"
+df_catalogo = cursor_db.fetchall()
+df_catalogo = pd.read_sql_query(query, conexao_db)
+media_por_categoria = df_catalogo.groupby("categoria")["preco"].mean()
+media_moveis = float(media_por_categoria["Moveis"])
 
 print("D3 - Média da Categoria Móveis:", media_moveis)
 # Saída esperada: 775.0
