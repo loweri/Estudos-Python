@@ -24,8 +24,10 @@ df_clientes_raw = None
 total_linhas_vendas = 0
 total_linhas_clientes = 0
 
-# Espaço para resolução da Fase 1:
-
+df_vendas_raw = pd.read_csv("vendas_brutas.csv")
+df_clientes_raw = pd.read_json("clientes_cadastrados.json")
+total_linhas_vendas = int(len(df_vendas_raw))
+total_linhas_clientes = int(len(df_clientes_raw))
 
 print(f"Fase 1 - Vendas Brutas Lidas: {total_linhas_vendas} linhas")
 print(f"Fase 1 - Clientes Lidos: {total_linhas_clientes} linhas")
@@ -45,8 +47,10 @@ print("=" * 65)
 df_vendas_limpas = None
 total_vendas_limpas = 0
 
-# Espaço para resolução da Fase 2:
-
+df_vendas_limpas = df_vendas_raw.drop_duplicates(subset=["transacao_id"])
+df_vendas_limpas = df_vendas_limpas.fillna({"cupom": "SEM_CUPOM"})
+df_vendas_limpas["data_compra"] = pd.to_datetime(df_vendas_limpas["data_compra"])
+total_vendas_limpas = int(len(df_vendas_limpas))
 
 print(f"Fase 2 - Vendas Limpas Restantes: {total_vendas_limpas} linhas")
 print("Fase 2 - Tipo da Data Compra:", str(df_vendas_limpas["data_compra"].dtype) if df_vendas_limpas is not None else "")
@@ -64,8 +68,8 @@ print("=" * 65)
 # 3. Armazene o DataFrame final consolidado em 'df_consolidado'.
 df_consolidado = None
 
-# Espaço para resolução da Fase 3:
-
+df_consolidado = pd.merge(df_vendas_limpas, df_clientes_raw, on="cliente_id", how="left")
+df_consolidado["ano_compra"] = df_consolidado["data_compra"].dt.year
 
 print("Fase 3 - Colunas Consolidadas:", list(df_consolidado.columns) if df_consolidado is not None else [])
 print("Fase 3 - Total de Linhas Consolidadas:", len(df_consolidado) if df_consolidado is not None else 0)
@@ -87,8 +91,13 @@ print("=" * 65)
 conexao_dw = None
 total_gravado_banco = 0
 
-# Espaço para resolução da Fase 4:
-
+conexao_dw = sqlite3.connect("armazem_dados.db")
+df_consolidado.to_sql("faturamento_analitico", conexao_dw, if_exists="replace", index=False)
+cursor_db = conexao_dw.cursor()
+cursor_db.execute("SELECT COUNT(*) FROM faturamento_analitico;")
+total_gravado_banco = cursor_db.fetchone()[0]
+with open("etl_execucao.log", "w") as arquivo:
+    arquivo.write(f"SUCESSO: Pipeline executado com {total_gravado_banco} registros carregados.\n")
 
 print(f"Fase 4 - Registros Gravados no Banco SQLite: {total_gravado_banco}")
 # Saída esperada:
